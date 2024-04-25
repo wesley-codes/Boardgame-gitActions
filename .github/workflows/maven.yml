@@ -24,7 +24,7 @@ jobs:
       uses: actions/upload-artifact@v4.3.3
       with:
     # Artifact name
-        name: boargame
+        name: boardgame
         path: target/*.jar
 
     - name: TRIVY FS SCAN
@@ -37,4 +37,15 @@ jobs:
         SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
         SONAR_HOST_URL: ${{secrets.SONAR_HOST_URL}}
 
-      
+    - name: Install jq
+      run: sudo apt-get update && sudo apt-get install -y jq
+
+    - name: SonarQube Quality Gate Check
+      id: sonarqube-quality-gate-check
+      uses: SonarSource/sonarqube-quality-gate-action@v1.1.0
+      #force to fail after specific time
+      timeout-minutes: 5
+      env:
+        SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+        SONAR_HOST_URL: ${{secrets.SONAR_HOST_URL}}
+          
