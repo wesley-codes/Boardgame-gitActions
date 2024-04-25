@@ -72,3 +72,13 @@ jobs:
     - name: Docker Push
       run: |
         docker push meka124/boardgame:latest
+
+    - name: Kubectl Action
+      uses: tale/kubectl-action@v1
+      with: 
+        base64-kube-config: ${{secrets.KUBE_CONFIG}}
+    - run: |
+          kubectl apply -f deploymnet-service.yaml -n webapps
+          kubectl get svc -n webapps 
+        
+    
